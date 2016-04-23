@@ -50,9 +50,9 @@ def main():
         except: continue
 
         if "PRIVMSG" in data:
-            channel = data.split()[2]
             # Check for the channel name.
             # Bot won't respond to PMs <- maybe intended?
+            channel = data.split()[2]
 
             if ':,hi' in data:
                 irc.send_msg(channel, "iloveyou")
