@@ -15,17 +15,15 @@ class IRC:
     def auth(self):
         self.sock.connect((self.host, 7000))
         self.sock.setblocking(False)
-        self.sock.send(
-            str.encode("PASS {passwd}\n".format(passwd=self.passwd)))
-        self.sock.send(
-            str.encode("NICK {nick}\n".format(nick=self.nick)))
-        self.sock.send(
-            str.encode("USER {nick} {nick} {nick} :{nick}\n"
-                       .format(nick=self.nick)))
+        self.sock.send("PASS {passwd}\n"
+                       .format(passwd=self.passwd).encode())
+        self.sock.send("NICK {nick}\n"
+                       .format(nick=self.nick).encode())
+        self.sock.send("USER {nick} {nick} {nick} :{nick}\n"
+                       .format(nick=self.nick).encode())
 
         for c in self.channels:
-            self.sock.send(
-                str.encode("JOIN " + c + "\n"))
+            self.sock.send("JOIN " + c + "\n".encode())
 
     def poll(self):
         data = self.sock.recv(2040)
@@ -36,9 +34,8 @@ class IRC:
         return data
 
     def send_msg(self, channel, message):
-        self.sock.send(
-            str.encode("PRIVMSG {channel} {message}\n"
-                       .format(channel=channel, message=message)))
+        self.sock.send("PRIVMSG {channel} {message}\n"
+                       .format(channel=channel, message=message).encode())
 
 def main():
     irc = IRC()
