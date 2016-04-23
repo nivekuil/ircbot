@@ -50,15 +50,9 @@ def main():
         except: continue
 
         if b"PRIVMSG" in data:
+            channel = data.split()[2].decode()
             # Check for the channel name.
-            for c in irc.channels:
-                if c.encode() in data:
-                    channel = c
-                    break
-            else:
-                # If no channel name is found (shouldn't happen?) then
-                # start again from the top.
-                continue
+            # Bot won't respond to PMs <- maybe intended?
 
             if b':,hi' in data:
                 irc.send_msg(channel, "iloveyou")
