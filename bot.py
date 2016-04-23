@@ -26,10 +26,10 @@ class IRC:
             self.sock.send(str.encode("JOIN " + c + "\n"))
 
     def poll(self):
-        data = self.sock.recv(2040)
+        data = self.sock.recv(2040).decode()
 
-        if b"PING" in data:
-            irc.send("PONG " + text.split()[1] + "\r\n".encode())
+        if "PING" in data:
+            irc.send(str.encode("PONG " + text.split()[1] + "\r\n"))
 
         return data
 
@@ -49,12 +49,12 @@ def main():
             print(data)
         except: continue
 
-        if b"PRIVMSG" in data:
-            channel = data.split()[2].decode()
+        if "PRIVMSG" in data:
+            channel = data.split()[2]
             # Check for the channel name.
             # Bot won't respond to PMs <- maybe intended?
 
-            if b':,hi' in data:
+            if ':,hi' in data:
                 irc.send_msg(channel, "iloveyou")
 
 if __name__ == "__main__":
