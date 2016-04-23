@@ -1,0 +1,2 @@
+* #ucsd ircbot
+Most of it was written in an hour, but the code should be fairly reusable if not robust.
