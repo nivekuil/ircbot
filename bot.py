@@ -23,7 +23,7 @@ class IRC:
                        .format(nick=self.nick).encode())
 
         for c in self.channels:
-            self.sock.send("JOIN " + c + "\n".encode())
+            self.sock.send(str.encode("JOIN " + c + "\n"))
 
     def poll(self):
         data = self.sock.recv(2040)
@@ -61,7 +61,7 @@ def main():
                 continue
 
             if b':,hi' in data:
-                irc.send_msg(channel, "hi")
+                irc.send_msg(channel, "iloveyou")
 
 if __name__ == "__main__":
     main()
