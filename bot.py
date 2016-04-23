@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import socket, ssl, sys, time
 
 class IRC:
