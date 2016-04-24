@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-import socket, ssl, time
+import os, socket, ssl, time
 
 class IRC:
 
     def __init__(self):
         self.host = "nivekuil.com"
         self.port = 7000
-        self.nick = "ucsdbot"
-        self.passwd = open("ircbotpass.txt", 'r').read().strip("\n")
+        self.nick = "bot"
         self.channels = ["#nivekuil", "#ucsd"]
         self.sock = ssl.wrap_socket(
             socket.socket(socket.AF_INET, socket.SOCK_STREAM))
+        passwdfile = os.path.join(os.path.dirname(__file__), 'ircbotpass.txt')
+        self.passwd = open(passwdfile, 'r').read().strip("\n")
 
     def auth(self):
         self.sock.connect((self.host, 7000))
