@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-import os, socket, ssl
-import random
+import os, socket
+from time import sleep
+from ssl import wrap_socket
+from random import choice
 
 class IRC:
 
@@ -9,7 +11,7 @@ class IRC:
         self.port = 7000
         self.nick = "bot"
         self.channels = ["#nivekuil", "#ucsd"]
-        self.sock = ssl.wrap_socket(
+        self.sock = wrap_socket(
             socket.socket(socket.AF_INET, socket.SOCK_STREAM))
         passwdfile = os.path.join(os.path.dirname(__file__), 'ircbotpass.txt')
         self.passwd = open(passwdfile, 'r').read().strip("\n")
@@ -46,6 +48,8 @@ def main():
 
     while True:
 
+        sleep(0.05)
+
         try:
             data = irc.poll()
             print(data)
@@ -78,8 +82,7 @@ def main():
                         '^v^', '*O*', '^,^', '^0^', '^o^', '-.-',
                 ]
 
-                kirby = random.choice(left) + random.choice(face) + \
-                        random.choice(right)
+                kirby = choice(left) + choice(face) + choice(right)
                 irc.send_msg(channel, kirby)
 
             if ':,eval' in data:
