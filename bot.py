@@ -53,6 +53,8 @@ def main():
             # Check for the channel name.
             # Bot won't respond to PMs <- maybe intended?
             channel = data.split()[2]
+            # User input after the command starts from index 4,
+            # so we get the message by joining everything after that together
             message = str.join(" ", data.split()[4:])
 
             if ':,hi' in data:
