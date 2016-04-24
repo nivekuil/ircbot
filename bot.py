@@ -69,17 +69,19 @@ def main():
             if ':,echo' in data:
                 irc.send_msg(channel, message)
 
-            if 'kirby' in data:
-                kirbys = [
-                    "<(^-^<)",
-                    "^(^.^)^",
-                    "(>-.-)>",
-                    "(>^-^<)",
-                    "v(x.x)v",
-                    "(>^.^)>",
-                    "^(._.)^",
+            if ':,kirby' in data:
+                left = ['(>', '(>', '<(', '<(',
+                        '^(', 'v(']
+                right = ['<)', '<)', ')>', ')>',
+                         ')^', ')v']
+                face = ['^-^', '^-^', '.-.', '._.', '*-*', '^o^',
+                        'x.x', 'o.o', '*.*', '^.^', 'v.v', 'o=o',
+                        '^v^', '*O*', '^,^', '^0^', '^o^', '-.-',
                 ]
-                irc.send_msg(channel, random.choice(kirbys))
+
+                kirby = random.choice(left) + random.choice(face) + \
+                        random.choice(right)
+                irc.send_msg(channel, kirby)
 
             if ':,eval' in data:
                 irc.send_msg(channel, "no")
