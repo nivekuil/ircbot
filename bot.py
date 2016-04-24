@@ -53,9 +53,19 @@ def main():
             # Check for the channel name.
             # Bot won't respond to PMs <- maybe intended?
             channel = data.split()[2]
+            message = str.join(" ", data.split()[4:])
 
             if ':,hi' in data:
                 irc.send_msg(channel, "iloveyou")
+
+            if ':,rray' in data:
+                irc.send_msg(channel, "ded")
+
+            if ':,echo' in data:
+                irc.send_msg(channel, message)
+
+            if ':,eval' in data:
+                irc.send_msg(channel, "no")
 
 if __name__ == "__main__":
     main()
