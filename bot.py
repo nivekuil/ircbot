@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os, socket, ssl, time
+import random
 
 class IRC:
 
@@ -15,7 +16,7 @@ class IRC:
 
     def auth(self):
         self.sock.connect((self.host, 7000))
-        self.sock.setblocking(False)
+        self.sock.settimeout(None)
         self.sock.send("PASS {passwd}\n"
                        .format(passwd=self.passwd).encode())
         self.sock.send("NICK {nick}\n"
@@ -30,7 +31,8 @@ class IRC:
         data = self.sock.recv(2040).decode()
 
         if "PING" in data:
-            irc.send(str.encode("PONG " + text.split()[1] + "\r\n"))
+            print("ping")
+            self.sock.send(str.encode("PONG " + text.split()[1] + "\r\n"))
 
         return data
 
@@ -66,6 +68,18 @@ def main():
 
             if ':,echo' in data:
                 irc.send_msg(channel, message)
+
+            if 'kirby' in data:
+                kirbys = [
+                    "<(^-^<)",
+                    "^(^.^)^",
+                    "(>-.-)>",
+                    "(>^-^<)",
+                    "v(x.x)v",
+                    "(>^.^)>",
+                    "^(._.)^",
+                ]
+                irc.send_msg(channel, random.choice(kirbys))
 
             if ':,eval' in data:
                 irc.send_msg(channel, "no")
