@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import os, socket, ssl, time
+import os, socket, ssl
 import random
 
 class IRC:
@@ -32,7 +32,7 @@ class IRC:
 
         if "PING" in data:
             print("ping")
-            self.sock.send(str.encode("PONG " + text.split()[1] + "\r\n"))
+            self.sock.send(str.encode("PONG " + data.split()[1] + "\r\n"))
 
         return data
 
@@ -45,7 +45,6 @@ def main():
     irc.auth()
 
     while True:
-        time.sleep(0.05)
 
         try:
             data = irc.poll()
