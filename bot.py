@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import os, socket
+import os.path, socket
 from time import sleep
 from ssl import wrap_socket
 from random import choice
@@ -32,7 +32,7 @@ class IRC:
     def poll(self):
         data = self.sock.recv(2040).decode()
 
-        if "PING" in data:
+        if data.startswith('PING'):
             print("ping")
             self.sock.send(str.encode("PONG " + data.split()[1] + "\r\n"))
 
@@ -63,14 +63,34 @@ def main():
             # so we get the message by joining everything after that together
             message = str.join(" ", data.split()[4:])
 
-            if ':,hi' in data:
-                irc.send_msg(channel, "iloveyou")
+            if ':,help' in data:
+                irc.send_msg(channel, "https://github.com/nivekuil/ircbot")
+
+            if ':,alive' in data:
+                irc.send_msg(channel, "yes")
+
+            if ':,eval' in data:
+                irc.send_msg(channel, "no")
+
+            if ':,echo' in data:
+                irc.send_msg(channel, message)
 
             if ':,rray' in data:
                 irc.send_msg(channel, "ded")
 
-            if ':,echo' in data:
-                irc.send_msg(channel, message)
+            if ':,yt' in data:
+                from urllib.parse import urlparse, urlencode
+                from urllib.request import urlopen
+                import re
+                query_string = urlencode({'search_query=': message})
+                html_content = urlopen(
+                    'https://www.youtube.com/results?search_query=' +
+                    query_string)
+                search_results = re.findall(r'href=\"\/watch\?v=(.{11})',
+                                            html_content.read().decode())
+                url = 'https://www.youtube.com/watch?v=' + search_results[0]
+                print (search_results)
+                irc.send_msg(channel, url)
 
             if ':,kirby' in data:
                 left = ['(>', '(>', '<(', '<(',
@@ -84,9 +104,6 @@ def main():
 
                 kirby = choice(left) + choice(face) + choice(right)
                 irc.send_msg(channel, kirby)
-
-            if ':,eval' in data:
-                irc.send_msg(channel, "no")
 
 if __name__ == "__main__":
     main()

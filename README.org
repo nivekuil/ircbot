@@ -1,2 +1,2 @@
 * #ucsd ircbot
-Most of it was written in an hour, but the code should be fairly reusable if not robust.
+A simple IRC bot in Python 3.  Most of it was written in an hour, but the code should be fairly reusable if not robust.  Check bot.py for a list of commands.
