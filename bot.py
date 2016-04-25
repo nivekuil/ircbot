@@ -33,7 +33,6 @@ class IRC:
         data = self.sock.recv(2040).decode()
 
         if data.startswith('PING'):
-            print("ping")
             self.sock.send(str.encode("PONG " + data.split()[1] + "\r\n"))
 
         return data
@@ -59,29 +58,30 @@ def main():
             # Check for the channel name.
             # Bot won't respond to PMs <- maybe intended?
             channel = data.split()[2]
+            command = data.split()[3]
             # User input after the command starts from index 4,
             # so we get the message by joining everything after that together
             message = str.join(" ", data.split()[4:])
 
-            if ':,help' in data:
+            if ':,help' == command:
                 irc.send_msg(channel, "https://github.com/nivekuil/ircbot")
 
-            if ':,alive' in data:
+            if ':,alive' == command:
                 irc.send_msg(channel, "yes")
 
-            if ':,name' in data:
+            if ':,name' == command:
                 irc.send_msg(channel, "not shitbot")
 
-            if ':,eval' in data:
+            if ':,eval' == command:
                 irc.send_msg(channel, "no")
 
-            if ':,echo' in data:
+            if ':,echo' == command:
                 irc.send_msg(channel, message)
 
-            if ':,rray' in data:
+            if ':,rray' == command:
                 irc.send_msg(channel, "ded")
 
-            if ':,yt' in data:
+            if ':,yt' == command:
                 from urllib.parse import urlparse, urlencode
                 from urllib.request import urlopen
                 import re
@@ -95,7 +95,7 @@ def main():
                 print (search_results)
                 irc.send_msg(channel, url)
 
-            if ':,kirby' in data:
+            if ':,kirby' == command:
                 left = ['(>', '(>', '<(', '<(',
                         '^(', 'v(']
                 right = ['<)', '<)', ')>', ')>',
@@ -108,7 +108,7 @@ def main():
                 kirby = choice(left) + choice(face) + choice(right)
                 irc.send_msg(channel, kirby)
 
-            if ':,8ball' in data:
+            if ':,8ball' == command:
                 responses = [
                     "It is certain",
                     "It is decidedly so",
