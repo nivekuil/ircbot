@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os.path, socket
+import re
 from time import sleep
 from ssl import wrap_socket
 from random import choice
@@ -51,17 +52,15 @@ def main():
 
         try:
             data = irc.poll()
+            # Destructure the received data and give each part a name.
+            # This will throw an error if data.split() returns less than 4
+            # elements, but any message we care about will have more.
+            sender, irc_command, channel, command, *message = data.split()
+            message = " ".join(message)
             print(data)
         except: continue
 
-        if "PRIVMSG" in data:
-            # Check for the channel name.
-            # Bot won't respond to PMs <- maybe intended?
-            channel = data.split()[2]
-            command = data.split()[3]
-            # User input after the command starts from index 4,
-            # so we get the message by joining everything after that together
-            message = str.join(" ", data.split()[4:])
+        if "PRIVMSG" == irc_command:
 
             if ':,help' == command:
                 irc.send_msg(channel, "https://github.com/nivekuil/ircbot")
@@ -84,7 +83,6 @@ def main():
             if ':,yt' == command:
                 from urllib.parse import urlparse, urlencode
                 from urllib.request import urlopen
-                import re
                 query_string = urlencode({'search_query=': message})
                 html_content = urlopen(
                     'https://www.youtube.com/results?search_query=' +
@@ -95,7 +93,7 @@ def main():
                 print (search_results)
                 irc.send_msg(channel, url)
 
-            if ':,kirby' == command:
+            if ':,kirby' in data:
                 left = ['(>', '(>', '<(', '<(',
                         '^(', 'v(']
                 right = ['<)', '<)', ')>', ')>',
@@ -108,7 +106,7 @@ def main():
                 kirby = choice(left) + choice(face) + choice(right)
                 irc.send_msg(channel, kirby)
 
-            if ':,8ball' == command:
+            if ':,8ball' in data:
                 responses = [
                     "It is certain",
                     "It is decidedly so",
