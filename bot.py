@@ -62,9 +62,6 @@ def main():
 
         if "PRIVMSG" == irc_command:
 
-            if ':,help' == command:
-                irc.send_msg(channel, "https://github.com/nivekuil/ircbot")
-
             if ':,alive' == command:
                 irc.send_msg(channel, "yes")
 
@@ -81,17 +78,18 @@ def main():
                 irc.send_msg(channel, "ded")
 
             if ':,yt' == command:
-                from urllib.parse import urlparse, urlencode
+                from urllib.parse import urlencode
                 from urllib.request import urlopen
-                query_string = urlencode({'search_query=': message})
-                html_content = urlopen(
-                    'https://www.youtube.com/results?search_query=' +
-                    query_string)
+                query_string = urlencode({'search_query': message})
+                html_content = urlopen('https://www.youtube.com/results?' +
+                                       query_string)
                 search_results = re.findall(r'href=\"\/watch\?v=(.{11})',
                                             html_content.read().decode())
                 url = 'https://www.youtube.com/watch?v=' + search_results[0]
-                print (search_results)
                 irc.send_msg(channel, url)
+
+            if ':,help' in data or ':,info' in data:
+                irc.send_msg(channel, "https://github.com/nivekuil/ircbot")
 
             if ':,kirby' in data:
                 left = ['(>', '(>', '<(', '<(',
