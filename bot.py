@@ -18,7 +18,7 @@ class IRC:
         self.passwd = open(passwdfile, 'r').read().strip("\n")
 
     def auth(self):
-        self.sock.connect((self.host, 7000))
+        self.sock.connect((self.host, self.port))
         self.sock.settimeout(None)
         self.sock.send("PASS {passwd}\n"
                        .format(passwd=self.passwd).encode())
