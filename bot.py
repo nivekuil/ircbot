@@ -10,7 +10,7 @@ class IRC:
     def __init__(self):
         self.host = "nivekuil.com"
         self.port = 7000
-        self.nick = "bot"
+        self.nick = "rebelbot"
         self.channels = ["#nivekuil", "#ucsd"]
         self.sock = wrap_socket(
             socket.socket(socket.AF_INET, socket.SOCK_STREAM))
@@ -52,18 +52,30 @@ def main():
 
         try:
             data = irc.poll()
+            print(data)
             # Destructure the received data and give each part a name.
             # This will throw an error if data.split() returns less than 4
             # elements, but any message we care about will have more.
             sender, irc_command, channel, command, *message = data.split()
+
+            # Get the nickname of the sender, which is the text before !
+            sender_nick = sender.split('!', 1)[0]
+            # Format the message into a single string
             message = " ".join(message)
-            print(data)
+
         except: continue
 
         if "PRIVMSG" == irc_command:
 
             if ':,alive' == command:
                 irc.send_msg(channel, "yes")
+
+            if ':bot-:' == command:
+                if message:
+                    msg = ": yes, m'lord"
+                else:
+                    msg = ": m'lord?"
+                irc.send_msg(channel, sender_nick + msg)
 
             if ':,name' == command:
                 irc.send_msg(channel, "not shitbot")
