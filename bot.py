@@ -71,10 +71,7 @@ def main():
                 irc.send_msg(channel, "yes")
 
             if ':bot-:' == command:
-                if message:
-                    msg = ": yes, m'lord"
-                else:
-                    msg = ": m'lord?"
+                msg = ": yes, m'lord" if message else ": m'lord?"
                 irc.send_msg(channel, sender_nick + msg)
 
             if ':,name' == command:
