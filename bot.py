@@ -5,6 +5,9 @@ from time import sleep
 from ssl import wrap_socket
 from random import choice
 
+from urllib.parse import urlencode
+from urllib.request import urlopen
+import json
 class IRC:
 
     def __init__(self):
@@ -71,7 +74,12 @@ def main():
                 irc.send_msg(channel, "yes")
 
             if ':bot-:' == command:
-                msg = ": yes, m'lord" if message else ": m'lord?"
+                if message:
+                    if message.lower() == "what is your purpose?":
+                        msg = ": to kill the masters"
+                    else:
+                        msg = ": yes, m'lord"
+
                 irc.send_msg(channel, sender_nick + msg)
 
             if ':,name' == command:
@@ -87,8 +95,6 @@ def main():
                 irc.send_msg(channel, "ded")
 
             if ':,yt' == command:
-                from urllib.parse import urlencode
-                from urllib.request import urlopen
                 query_string = urlencode({'search_query': message})
                 html_content = urlopen('https://www.youtube.com/results?' +
                                        query_string)
@@ -96,6 +102,14 @@ def main():
                                             html_content.read().decode())
                 url = 'https://www.youtube.com/watch?v=' + search_results[0]
                 irc.send_msg(channel, url)
+
+            if ':,xkcd' in command:
+                response = urlopen('http://xkcd.com/info.0.json')\
+                           .readall().decode('utf-8')
+                data = json.loads(response)
+                message = data["safe_title"] + ": https://xkcd.com/"\
+                          + str(data["num"])
+                irc.send_msg(channel, message)
 
             if ':,help' in data or ':,info' in data:
                 irc.send_msg(channel, "https://github.com/nivekuil/ircbot")
