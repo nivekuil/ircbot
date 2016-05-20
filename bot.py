@@ -103,12 +103,12 @@ def main():
                 url = 'https://www.youtube.com/watch?v=' + search_results[0]
                 irc.send_msg(channel, url)
 
-            if ':,xkcd' in command:
-                response = urlopen('http://xkcd.com/info.0.json')\
-                           .readall().decode('utf-8')
+            if ':,xkcd' in data:
+                url = 'http://xkcd.com/info.0.json'
+                response = urlopen(url).readall().decode('utf-8')
                 data = json.loads(response)
-                message = data["safe_title"] + ": https://xkcd.com/"\
-                          + str(data["num"])
+                message = "Today's xkcd: " + data["safe_title"] + \
+                          " - https://xkcd.com/" + str(data["num"])
                 irc.send_msg(channel, message)
 
             if ':,help' in data or ':,info' in data:
