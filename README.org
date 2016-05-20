@@ -1,2 +1,7 @@
 * #ucsd ircbot
 A simple IRC bot in Python 3.  Most of it was written in an hour, but the code should be fairly reusable if not robust.  Check bot.py for a list of commands.
+
+Some commands can be inlined by prepending a colon, like so:
+#+BEGIN_EXAMPLE
+<user> check out today's :,xkcd; getting the joke has temporarily staved off my crippling insecurity!
+#+END_EXAMPLE
